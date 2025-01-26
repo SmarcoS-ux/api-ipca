@@ -2,8 +2,20 @@ import express from 'express';
 import cors from 'cors';
 
 const app = express();
+
+const allowedOrigins = [
+    "https://app-ipca.netlify.app",
+    "http://192.168.100.230:3000",
+    "http://localhost:3000"
+];
 app.use(cors({
-    origin: "https://app-ipca.netlify.app",
+    origin: (origin, callback) => {
+        if(origin || allowedOrigins.includes(origin)){
+            callback(null, true);
+        } else{
+            callback(new Error("Acesso Negado."));
+        }
+    },
     credentials: true
 }));
 
